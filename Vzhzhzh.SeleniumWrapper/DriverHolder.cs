@@ -26,7 +26,7 @@ namespace Vzhzhzh.SeleniumWrapper
 
         private static IWebDriver CreateDriver()
         {
-            var driver =  new ChromeDriver();
+            var driver = new ChromeDriver();
                         //new FirefoxDriver();
                         //new PhantomJSDriver();
 
@@ -37,21 +37,32 @@ namespace Vzhzhzh.SeleniumWrapper
             return driver;
         }
 
-        public  void OpenUrl(string url)
+        public void OpenUrl(string url)
         {
             Instance.Navigate().GoToUrl(url);
         }
 
-        public  IWebElement Find(By by)
+        public IWebElement Find(By by, bool mustBePresent = true)
         {
+            try
+            {
             return Instance.FindElement(by);
         }
+            catch (Exception)
+            {
+                if (mustBePresent)
+                {
+                    throw;
+                }
+            }
+            return null;
+        }
 
-        public  IWebElement LongGet(By by, int timeout = 30)
+        public IWebElement LongFind(By by, int timeout = 30, bool mustBePresent = true)
         {
             Wait(x => ExpectedConditions.ElementIsVisible(@by), timeout);
             Instance.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(timeout));
-            var webElement = Find(@by);
+            var webElement = Find(@by, mustBePresent);
             Instance.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(TimeOut));
             return webElement;
         }
@@ -59,15 +70,16 @@ namespace Vzhzhzh.SeleniumWrapper
         public TResult Find<TResult>(By by, Func<IEnumerable<IWebElement>, TResult> filter)
         {
             return filter(Instance.FindElements(by));
+
         }
 
         public SelectResult LongGetSelect(By by)
         {
-            var element = LongGet(@by);
+            var element = LongFind(@by);
             return new SelectResult(element, new SelectElement(element));
         }
 
-        public SelectResult GetSelect(By by)
+        public SelectResult FindSelect(By by)
         {
             var element = Instance.FindElement(@by);
             return new SelectResult(element, new SelectElement(element));
@@ -92,7 +104,7 @@ namespace Vzhzhzh.SeleniumWrapper
 
         public void Clear(IWebElement element)
         {
-            EnsureAction(e=>e.Clear(), element);
+            EnsureAction(e => e.Clear(), element);
         }
 
         public void SendKeys(IWebElement element, string text)
@@ -105,17 +117,17 @@ namespace Vzhzhzh.SeleniumWrapper
 
         public void PressSpace(IWebElement element)
         {
-            EnsureAction(e=>e.SendKeys(Keys.Space), element);
+            EnsureAction(e => e.SendKeys(Keys.Space), element);
         }
 
         public void PressEnter(IWebElement element)
         {
-            EnsureAction(e=>e.SendKeys(Keys.Enter), element);
+            EnsureAction(e => e.SendKeys(Keys.Enter), element);
         }
 
         public void Click(IWebElement element)
         {
-            EnsureAction(e=>e.Click(), element);
+            EnsureAction(e => e.Click(), element);
         }
 
         public void EnsureAction(Action<IWebElement> action, IWebElement element)
@@ -155,7 +167,7 @@ namespace Vzhzhzh.SeleniumWrapper
             try
             {
 
-                if (TestContext.CurrentContext.Result.Outcome != ResultState.Success)
+                if (TestContext.CurrentContext.Result.Outcome == ResultState.Failure)
                 {
                     var wrapps = ((IWrapsDriver)Instance);
                     if (wrapps != null)

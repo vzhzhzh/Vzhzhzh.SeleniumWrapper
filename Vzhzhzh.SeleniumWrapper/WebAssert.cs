@@ -20,7 +20,7 @@ namespace Vzhzhzh.SeleniumWrapper
             try
             {
                 Thread.Sleep(50);
-                bool b = element.Displayed && element.Size.Height > 0 && element.Size.Width >0;
+                bool b = element.Displayed && element.Size.Height > 0 && element.Size.Width > 0;
                 return b;
             }
             catch
@@ -69,6 +69,5 @@ namespace Vzhzhzh.SeleniumWrapper
                 throw new AssertionException(String.Format("AssertElementText Failed: Value for '{0}' did not match expectations. Expected: [{1}], Actual: [{2}]", elementDescription, expectedValue, actualtext));
             }
         }
-
     }
 }

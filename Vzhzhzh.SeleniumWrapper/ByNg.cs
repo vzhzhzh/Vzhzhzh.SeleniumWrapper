@@ -9,6 +9,7 @@ namespace Vzhzhzh.SeleniumWrapper
         {
             return By.CssSelector(string.Format("[ng-model='{0}']", ngModelName));
         }
+
         public static By Click(string ngClickFunction)
         {
             if (ngClickFunction.Last() != ')')

@@ -7,10 +7,10 @@ namespace Vzhzhzh.SeleniumWrapper
     {
         protected DriverHolder Driver { get; private set; }
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         protected virtual void SetUp()
         {
-            Driver = new DriverHolder();    
+            Driver = new DriverHolder();
         }
 
         [TestFixtureTearDown]

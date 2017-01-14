@@ -37,11 +37,11 @@ namespace Vzhzhzh.SeleniumWrapper
             return this;
         }
 
-        public IRunnerExecutor SetConditions(int minSuccessCount = 2, int maxAttempts = 5)
+        public IRunnerExecutor SetConditions(int minSuccessCount = 1, int maxAttempts = 5)
         {
             if (minSuccessCount > maxAttempts)
             {
-                throw new InvalidOperationException("u fuckin wot mate");
+                throw new InvalidOperationException("u fockin wot mate");
             }
             _minSuccessfulAttempts = minSuccessCount;
             _maxAttempts = maxAttempts;
